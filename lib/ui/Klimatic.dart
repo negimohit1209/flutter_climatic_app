@@ -11,11 +11,11 @@ class Klimatic extends StatefulWidget {
 }
 
 class _KlimaticState extends State<Klimatic> {
-
   void showsStuff() async {
     Map data = await getWeather(util.appId, util.defaultCity);
     print(data.toString());
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,9 +55,8 @@ class _KlimaticState extends State<Klimatic> {
             child: Image.asset('images/light_rain.png'),
           ),
           Container(
-            margin: const EdgeInsets.fromLTRB(30.0, 450.0, 0.0, 0.0),
-            child: Text('42.2C', style: tempStyle()),
-          )
+              margin: const EdgeInsets.fromLTRB(30.0, 450.0, 0.0, 0.0),
+              child: updateTempWidget("Shimla"))
         ],
       ),
     );
@@ -68,6 +67,30 @@ class _KlimaticState extends State<Klimatic> {
         "http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${util.appId}&units=metric";
     http.Response response = await http.get(apiUrl);
     return json.decode(response.body);
+  }
+
+  Widget updateTempWidget(String city) {
+    return FutureBuilder(
+      future: getWeather(util.appId, city),
+      builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
+        // where we get all info or json data, we set up widget, etc.
+        if (snapshot.hasData) {
+          Map content = snapshot.data;
+          return Container(
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  title: Text(content['main']['temp'].toString(),
+                  style: tempStyle()),
+                )
+              ],
+            ),
+          );
+        }else{
+          return Container();
+        }
+      },
+    );
   }
 }
 
