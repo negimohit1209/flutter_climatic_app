@@ -11,6 +11,14 @@ class Klimatic extends StatefulWidget {
 }
 
 class _KlimaticState extends State<Klimatic> {
+  Future _goToNextScreen(BuildContext context) async{
+    Map results = await Navigator.of(context).push(
+      MaterialPageRoute<Map>(builder: (BuildContext context){
+        return ChangeCity();
+      })
+    );
+  }
+
   void showsStuff() async {
     Map data = await getWeather(util.appId, util.defaultCity);
     print(data.toString());
@@ -32,7 +40,7 @@ class _KlimaticState extends State<Klimatic> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.menu),
-            onPressed: showsStuff,
+            onPressed: () {_goToNextScreen(context);},
             color: Colors.red,
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 30.0, 0.0),
             iconSize: 30.0,
@@ -56,7 +64,7 @@ class _KlimaticState extends State<Klimatic> {
           ),
           Container(
               margin: const EdgeInsets.fromLTRB(30.0, 450.0, 0.0, 0.0),
-              child: updateTempWidget("Shimla"))
+              child: updateTempWidget("Manali"))
         ],
       ),
     );
@@ -81,16 +89,52 @@ class _KlimaticState extends State<Klimatic> {
               children: <Widget>[
                 ListTile(
                   title: Text(content['main']['temp'].toString(),
-                  style: tempStyle()),
+                      style: tempStyle()),
                 )
               ],
             ),
           );
-        }else{
+        } else {
           return Container();
         }
       },
     );
+  }
+}
+
+class ChangeCity extends StatelessWidget {
+  const ChangeCity({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          title: Text('Change City'),
+          centerTitle: true,
+        ),
+        body: Stack(
+          children: <Widget>[
+            Center(
+              child: Image.asset(
+                  'images/white_snow.png',
+                  width: 490.0,
+                  height: 1200.0,
+                  fit: BoxFit.fill,
+                )
+            )
+            ListView(
+              children: <Widget>[
+                Image.asset(
+                  'images/white_snow.png',
+                  width: 490.0,
+                  height: 1200.0,
+                  fit: BoxFit.fill,
+                )
+              ],
+            ),
+          ],
+        ));
   }
 }
 
