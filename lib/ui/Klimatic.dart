@@ -122,17 +122,8 @@ class ChangeCity extends StatelessWidget {
                   height: 1200.0,
                   fit: BoxFit.fill,
                 )
-            )
-            ListView(
-              children: <Widget>[
-                Image.asset(
-                  'images/white_snow.png',
-                  width: 490.0,
-                  height: 1200.0,
-                  fit: BoxFit.fill,
-                )
-              ],
             ),
+           
           ],
         ));
   }
